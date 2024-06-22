@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=old_version
+comment1.params=
+comment1.target=old_version()
+comment2.params=choose\ based\ question
+comment2.target=boolean\ Your_Partner(boolean,\ int,\ int)
+comment2.text=\r\nthe\ method\ Your_Partner\ was\ made\ to\ deside\ if\ the\ player's\ partner\ betray\ them,\ if\ desided\ true\ then\ the\ partner\ betray\r\n
+comment3.params=random\ increase\ number
+comment3.target=int\ The_Question(int,\ int,\ int)
+numComments=4
