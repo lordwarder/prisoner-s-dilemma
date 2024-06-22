@@ -13,8 +13,8 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
 {
     ImageIcon mainMenu;
     
-    JButton QuitButton;
     JButton tutorialButton;
+    JPanel textAreaPanel;
     JButton yesButton;
     JButton noButton;
    
@@ -34,9 +34,7 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
        
         // Create a custom panel to handle background color and layout
         JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        mainMenu = new ImageIcon(new ImageIcon("mainMenu.jpg").getImage().getScaledInstance(768,768, Image.SCALE_SMOOTH));
-        //panel.setBackground(Color.GRAY);
+        mainMenu = new ImageIcon("mainMenu.jpg");
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -48,22 +46,36 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
         tutorialButton = new JButton("tutorial");
         tutorialButton.setActionCommand("tutorial");
         tutorialButton.addActionListener(this);
-        gbc.gridx = 1;
+        gbc.gridx = 0;
+        gbc.weightx = 1;
+        gbc.gridwidth = 3;
         gbc.gridy = 0;
-        panel.add(tutorialButton,gbc);
-       
-        yesButton = new JButton("yes");
+        panel.add(tutorialButton, gbc);
+        
+        textAreaPanel = new JPanel(new BorderLayout());
+        textAreaPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
+        textAreaPanel.add(new Crime());
+
+        gbc.gridx = 0;
+        gbc.weightx = 1;
+        gbc.gridwidth = 3;
+        gbc.gridy = 1;
+        panel.add(textAreaPanel, gbc);
+        
+        yesButton = new JButton(new ImageIcon("yesButton.png"));
         yesButton.setActionCommand("yes");
         yesButton.addActionListener(this);
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.weightx = 0.4;
+        gbc.gridwidth = 1;
+        gbc.gridy = 2;
         panel.add(yesButton,gbc);
         
-        noButton = new JButton("no");
+        noButton = new JButton(new ImageIcon("noButton.png"));
         noButton.setActionCommand("no");
         noButton.addActionListener(this);
         gbc.gridx = 2;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         panel.add(noButton,gbc);
        
         repaint();
@@ -74,18 +86,21 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
         switch(cmd){
             case "tutorial": createDialog(cmd);
                 break;
-            case "Quit": System.exit(0) ;
+            case "quit": System.exit(0) ;
                 break;
-            default : System.out.println("Sorry, this hasn't impliment yet");
+            default : System.out.println("Sorry, this hasn't been implimented yet");
                 break;
         }
     }
     
     public void paint (Graphics g){
         super.paint(g);
-        mainMenu.paintIcon(this,g,0,0);
+        Image scaledImage = mainMenu.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+        scaledImageIcon.paintIcon(this,g,0,0);
         Graphics2D g2 = (Graphics2D) g;
         tutorialButton.repaint();
+        textAreaPanel.repaint();
         yesButton.repaint();
         noButton.repaint();
     }
