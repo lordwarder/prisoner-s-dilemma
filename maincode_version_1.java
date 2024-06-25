@@ -1,14 +1,18 @@
 /**
  * this code was made to run an advanced version of the prisoner's dilemma.
  *
- * @author (Jack ward)
- * @version (20/6/24)
+ * @author Jack ward
+ * @version 20/6/24
  */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
+import crimes.Crime;
+import mainMenu.MenuPanel;
 
+/**
+ * The main class for the Prisoner's Dilemma game. Extends JFrame and implements ActionListener and MouseListener.
+ */
 public class maincode_version_1 extends JFrame implements ActionListener,MouseListener
 {
     ImageIcon mainMenu;
@@ -17,10 +21,11 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
     JPanel textAreaPanel;
     JButton yesButton;
     JButton noButton;
-   
+    
+    
     JMenuBar menuBar;
-    JMenu menu;
-    JMenuItem menuItem;
+    private int sentence = 0;
+    private JLabel sentenceLabel;
    
     public maincode_version_1(){
         setTitle("the Prisoner's Dilemma");
@@ -29,57 +34,41 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
         this.toFront();
         this.setVisible(true);
        
-        //menuBar=new JMenuBar();
-        //this.setJMenuBar(menuBar);
-       
         // Create a custom panel to handle background color and layout
         JPanel panel = new JPanel();
-        mainMenu = new ImageIcon("mainMenu.jpg");
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-
         add(panel);
         setPreferredSize(new Dimension(768,768));
         setLocationRelativeTo(null);
-       
-        tutorialButton = new JButton("tutorial");
-        tutorialButton.setActionCommand("tutorial");
-        tutorialButton.addActionListener(this);
-        gbc.gridx = 0;
-        gbc.weightx = 1;
-        gbc.gridwidth = 3;
-        gbc.gridy = 0;
-        panel.add(tutorialButton, gbc);
-        
-        textAreaPanel = new JPanel(new BorderLayout());
-        textAreaPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
-        textAreaPanel.add(new Crime());
 
-        gbc.gridx = 0;
-        gbc.weightx = 1;
-        gbc.gridwidth = 3;
-        gbc.gridy = 1;
-        panel.add(textAreaPanel, gbc);
-        
-        yesButton = new JButton(new ImageIcon("yesButton.png"));
-        yesButton.setActionCommand("yes");
-        yesButton.addActionListener(this);
-        gbc.gridx = 0;
-        gbc.weightx = 0.4;
-        gbc.gridwidth = 1;
-        gbc.gridy = 2;
-        panel.add(yesButton,gbc);
-        
-        noButton = new JButton(new ImageIcon("noButton.png"));
-        noButton.setActionCommand("no");
-        noButton.addActionListener(this);
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        panel.add(noButton,gbc);
+        menuBar = new JMenuBar();
+
+        // Add the "File" menu
+        JMenu fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+
+        // Add "Save" menu item
+        JMenuItem saveItem = new JMenuItem("Save");
+        saveItem.setActionCommand("save");
+        saveItem.addActionListener(this);
+        fileMenu.add(saveItem);
+
+        // Add "Quit" menu item
+        JMenuItem quitItem = new JMenuItem("Quit");
+        quitItem.setActionCommand("quit");
+        quitItem.addActionListener(this);
+        fileMenu.add(quitItem);
+
+        // Add the sentence label
+        sentenceLabel = new JLabel("Sentence: 0");
+        menuBar.add(Box.createHorizontalGlue()); // Push the label to the right
+        menuBar.add(sentenceLabel);
+
+        // Set the menu bar
+        this.setJMenuBar(menuBar);
        
         repaint();
     }
+
     public  void actionPerformed(ActionEvent e){
        
         String cmd = e.getActionCommand();
@@ -88,9 +77,28 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
                 break;
             case "quit": System.exit(0) ;
                 break;
+            case "yes":
+                updateSentence(e);
+                break;
+            case "no":
+                updateSentence(e);
+                break;
             default : System.out.println("Sorry, this hasn't been implimented yet");
                 break;
         }
+    }
+
+    private void updateSentence(ActionEvent e) {
+        String cmd = e.getActionCommand();
+        if (cmd = "yes") {
+            sentence += RANDOM.nextInt(10);
+        } else {
+            sentence += 2;
+        }
+        // Update the sentence label
+        sentenceLabel.setText("Sentence: " + sentence);
+        // Display a new random crime scenario
+        crimeTextArea.setText(Crime.getRandomCrime());
     }
     
     public void paint (Graphics g){
