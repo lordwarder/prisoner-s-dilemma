@@ -13,30 +13,30 @@ import mainMenu.MenuPanel;
 /**
  * The main class for the Prisoner's Dilemma game. Extends JFrame and implements ActionListener and MouseListener.
  */
-public class maincode_version_1 extends JFrame implements ActionListener,MouseListener
+public class maincode_version_1 extends JFrame implements ActionListener, MouseListener
 {
-    ImageIcon mainMenu;
+    private ImageIcon background;
+    private JPanel currentPanel;
     
-    JButton tutorialButton;
-    JPanel textAreaPanel;
-    JButton yesButton;
-    JButton noButton;
+    private JMenuBar menuBar;
+    private JLabel   sentenceLabel;
+    private int      sentence = 0;
     
-    
-    JMenuBar menuBar;
-    private int sentence = 0;
-    private JLabel sentenceLabel;
-   
+    /**
+     * Constructor for the maincode_version_1 class. Sets up the game window and components.
+     */
     public maincode_version_1(){
-        setTitle("the Prisoner's Dilemma");
+        setTitle("The Prisoner's Dilemma");
         this.getContentPane().setPreferredSize(new Dimension(768,768));//X,Y
         this.pack();
         this.toFront();
         this.setVisible(true);
        
+        background = new ImageIcon("mainMenu.jpg");
+
         // Create a custom panel to handle background color and layout
-        JPanel panel = new JPanel();
-        add(panel);
+        this.currentPanel = new MenuPanel(this);
+        add(currentPanel);
         setPreferredSize(new Dimension(768,768));
         setLocationRelativeTo(null);
 
@@ -59,16 +59,21 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
         fileMenu.add(quitItem);
 
         // Add the sentence label
-        sentenceLabel = new JLabel("Sentence: 0");
+        sentenceLabel = new JLabel("Sentence: 0   ");
         menuBar.add(Box.createHorizontalGlue()); // Push the label to the right
         menuBar.add(sentenceLabel);
 
         // Set the menu bar
         this.setJMenuBar(menuBar);
        
-        repaint();
+        revalidate();
     }
 
+    /**
+     * Handles action events triggered by buttons and menu items.
+     *
+     * @param e the ActionEvent triggered by a button or menu item
+     */
     public  void actionPerformed(ActionEvent e){
        
         String cmd = e.getActionCommand();
@@ -88,30 +93,40 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
         }
     }
 
+    /**
+     * Updates the sentence based on the action performed (yes or no button clicked).
+     *
+     * @param e the ActionEvent triggered by a button
+     */
     private void updateSentence(ActionEvent e) {
         String cmd = e.getActionCommand();
-        if (cmd = "yes") {
-            sentence += RANDOM.nextInt(10);
+        if (cmd.equals("yes")) {
+            sentence += Crime.RANDOM.nextInt(10);
         } else {
             sentence += 2;
         }
         // Update the sentence label
-        sentenceLabel.setText("Sentence: " + sentence);
+        sentenceLabel.setText("Sentence: " + sentence + "   ");
         // Display a new random crime scenario
-        crimeTextArea.setText(Crime.getRandomCrime());
+        ((MenuPanel) currentPanel).newCrime();
+        //revalidate();
+        //currentPanel.repaint();
     }
     
+    /**
+     * Paints the background image and repaints the components.
+     *
+     * @param g the Graphics object used to paint the components
+     */
     public void paint (Graphics g){
         super.paint(g);
-        Image scaledImage = mainMenu.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        Image scaledImage = background.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
         ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
         scaledImageIcon.paintIcon(this,g,0,0);
-        Graphics2D g2 = (Graphics2D) g;
-        tutorialButton.repaint();
-        textAreaPanel.repaint();
-        yesButton.repaint();
-        noButton.repaint();
+        menuBar.repaint();
+        //currentPanel.paint(g);
     }
+    
     //this code handles the mouse controls
     public void mouseExited(MouseEvent e) {System.out.println("exit");}
     public void mouseEntered(MouseEvent e) {System.out.println("enter");}
@@ -120,9 +135,14 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
     public void mouseClicked(MouseEvent e) {
         int mousex=e.getX();
         int mousey=e.getY();
-       
+        System.out.println(mousex + " : " + mousey);
     }
-   
+    
+    /**
+     * Creates a dialog box with information based on the title provided.
+     *
+     * @param title the title of the dialog box
+     */
     void createDialog(String title){
         JDialog box = new JDialog(this);
         String prompt = " ";
@@ -146,6 +166,9 @@ public class maincode_version_1 extends JFrame implements ActionListener,MouseLi
         box.setVisible(true);
         box.setTitle(title);
     }
+
+    public static void main(String[] args){
+        maincode_version_1 game = new maincode_version_1();
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 }
-
-
