@@ -2,7 +2,7 @@
  * this code was made to run an advanced version of the prisoner's dilemma.
  *
  * @author Jack ward
- * @version 20/6/24
+ * @version 15/7/24
  */
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +13,9 @@ import mainMenu.MenuPanel;
 /**
  * The main class for the Prisoner's Dilemma game. Extends JFrame and implements ActionListener and MouseListener.
  */
-public class maincode_version_1 extends JFrame implements ActionListener, MouseListener
+public class MainCodeVersion1 extends JFrame implements ActionListener, MouseListener
 {
+    private PartnerSystem Acconplise;
     private ImageIcon background;
     private JPanel currentPanel;
     
@@ -23,9 +24,9 @@ public class maincode_version_1 extends JFrame implements ActionListener, MouseL
     private int      sentence = 0;
     
     /**
-     * Constructor for the maincode_version_1 class. Sets up the game window and components.
+     * Constructor for the MainCodeVersion1 class. Sets up the game window and components.
      */
-    public maincode_version_1(){
+    public MainCodeVersion1(){
         setTitle("The Prisoner's Dilemma");
         this.getContentPane().setPreferredSize(new Dimension(768,768));//X,Y
         this.pack();
@@ -67,6 +68,7 @@ public class maincode_version_1 extends JFrame implements ActionListener, MouseL
         this.setJMenuBar(menuBar);
        
         revalidate();
+        //Resize the window so the ImageIcon loads
     }
 
     /**
@@ -99,11 +101,23 @@ public class maincode_version_1 extends JFrame implements ActionListener, MouseL
      * @param e the ActionEvent triggered by a button
      */
     private void updateSentence(ActionEvent e) {
+        
         String cmd = e.getActionCommand();
         if (cmd.equals("yes")) {
-            sentence += Crime.RANDOM.nextInt(10);
+            
+            if(Acconplise.getResponce(true)==true){
+                sentence += 1;
+            }else {
+                sentence += 4;
+            }    
+            
         } else {
-            sentence += 2;
+            if(Acconplise.getResponce(false)==true){
+                sentence += 0;
+            }else {
+                sentence += 2;
+            } 
+            
         }
         // Update the sentence label
         sentenceLabel.setText("Sentence: " + sentence + "   ");
@@ -168,7 +182,7 @@ public class maincode_version_1 extends JFrame implements ActionListener, MouseL
     }
 
     public static void main(String[] args){
-        maincode_version_1 game = new maincode_version_1();
+        MainCodeVersion1 game = new MainCodeVersion1();
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
