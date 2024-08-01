@@ -15,7 +15,7 @@ import mainMenu.MenuPanel;
  */
 public class MainCodeVersion1 extends JFrame implements ActionListener, MouseListener
 {
-    private PartnerSystem Acconplise;
+    private PartnerSystem Accomplice;
     private ImageIcon background;
     private JPanel currentPanel;
     
@@ -28,6 +28,7 @@ public class MainCodeVersion1 extends JFrame implements ActionListener, MouseLis
      */
     public MainCodeVersion1(){
         setTitle("The Prisoner's Dilemma");
+        this.Accomplice = new PartnerSystem();
         this.getContentPane().setPreferredSize(new Dimension(768,768));//X,Y
         this.pack();
         this.toFront();
@@ -79,6 +80,7 @@ public class MainCodeVersion1 extends JFrame implements ActionListener, MouseLis
     public  void actionPerformed(ActionEvent e){
        
         String cmd = e.getActionCommand();
+        
         switch(cmd){
             case "tutorial": createDialog(cmd);
                 break;
@@ -105,14 +107,14 @@ public class MainCodeVersion1 extends JFrame implements ActionListener, MouseLis
         String cmd = e.getActionCommand();
         if (cmd.equals("yes")) {
             
-            if(Acconplise.getResponce(true)==true){
+            if(Accomplice.getResponce(true)==true){
                 sentence += 1;
             }else {
                 sentence += 4;
             }    
             
         } else {
-            if(Acconplise.getResponce(false)==true){
+            if(Accomplice.getResponce(false)==true){
                 sentence += 0;
             }else {
                 sentence += 2;
