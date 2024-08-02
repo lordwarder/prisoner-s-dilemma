@@ -103,21 +103,20 @@ public class MainCodeVersion1 extends JFrame implements ActionListener, MouseLis
      * @param e the ActionEvent triggered by a button
      */
     private void updateSentence(ActionEvent e) {
-        
+        boolean error = false;
         String cmd = e.getActionCommand();
         if (cmd.equals("yes")) {
-            
             if(Accomplice.getResponce(true)==true){
                 sentence += 1;
             }else {
                 sentence += 4;
             }    
-            
         } else {
             if(Accomplice.getResponce(false)==true){
-                sentence += 0;
+                sentence += 1;
+                error = true;
             }else {
-                sentence += 2;
+                sentence -= 2;
             } 
             
         }
@@ -125,6 +124,11 @@ public class MainCodeVersion1 extends JFrame implements ActionListener, MouseLis
         sentenceLabel.setText("Sentence: " + sentence + "   ");
         // Display a new random crime scenario
         ((MenuPanel) currentPanel).newCrime();
+        
+        if (error) {
+            sentence -= 1;
+            sentenceLabel.setText("Sentence: " + sentence + "   ");
+        }
         //revalidate();
         //currentPanel.repaint();
     }
